@@ -12,4 +12,4 @@ class UserCreationForm_Customized(UserCreationForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['avatar', 'name', 'username', 'email']
+        fields = ['name', 'username', 'email']

@@ -6,6 +6,23 @@
     <title>Document</title>
   </head>
   <body>
-    <p>Login</p>
+    <form class="form" action="" method="POST">
+      {% csrf_token %}
+      <div>
+        <label for="room_name">Email/UserName</label>
+        <input id="username" name="email" type="text" />
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+        />
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
   </body>
 </html>

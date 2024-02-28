@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -25,4 +25,89 @@
       <button type="submit">Login</button>
     </form>
   </body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 300px;
+            padding: 16px;
+            background-color: white;
+            margin: 0 auto;
+            margin-top: 100px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        .alert {
+            background-color: #f44336;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        input[type=email], input[type=password] {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            border: none;
+            background: #f1f1f1;
+        }
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            opacity: 0.9;
+        }
+        input[type=submit]:hover {
+            opacity:1;
+        }
+    </style>
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.getElementById('id_password');
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        {% for message in messages %}
+        <div class="alert" id="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_email">Email:</label><br>
+            <input type="email" id="id_email" name="email"><br>
+            <label for="id_password">Password:</label><br>
+            <input type="password" id="id_password" name="password"><br>
+            <input type="checkbox" onclick="togglePasswordVisibility()">Show Password<br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <script>
+        setTimeout(function() {
+            var alert = document.getElementById('alert');
+            if (alert) alert.style.display = 'none';
+        }, 3000);
+    </script>
+</body>
 </html>

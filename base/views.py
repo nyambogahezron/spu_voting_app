@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .models import User
+from administration_app.models import Election, Position, RunningMate
 from .forms import UserForm, UserCreationForm_Customized
 
 
@@ -50,8 +51,29 @@ def registerUser(request):
 
 
 def home(request):
+    current_time = timezone.now()
+    elections = Election.objects.filter(end_date__gt=current_time)
+    data = []
 
-    return render(request, 'base/home.html')
+    for election in elections:
+        positions = Position.objects.filter(election=election)
+        election_data = {
+            'election': election,
+            'positions': [],
+        }
+        for position in positions:
+            running_mates = RunningMate.objects.filter(position=position, election=election)
+            position_data = {
+                'position': position,
+                'running_mates': running_mates,
+            }
+            election_data['positions'].append(position_data)
+        data.append(election_data)
+
+    context = {
+        'data': data,
+    }
+    return render(request, 'base/home.html', context)
 
 
 def logoutUser(request):

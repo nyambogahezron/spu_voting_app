@@ -18,6 +18,29 @@
       <p>{{ request.user.name}}</p>
       {% endif %}
     </div>
-    <p>Home</p>
+    <div>
+      {% for election_data in data %}
+      <h2>{{ election_data.election.name }}</h2>
+      {% for position_data in election_data.positions %}
+      <h3>{{ position_data.position.title }}</h3>
+      {% for running_mate in position_data.running_mates %}
+      <p>{{ running_mate.name }}</p>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ request.user.id }}" />
+        <input
+          type="hidden"
+          name="running_mate_id"
+          value="{{ running_mate.id }}"
+        />
+        <input
+          type="hidden"
+          name="election_id"
+          value="{{ election_data.election.id }}"
+        />
+        <input type="submit" value="Vote" />
+      </form>
+      {% endfor %} {% endfor %} {% endfor %}
+    </div>
   </body>
 </html>

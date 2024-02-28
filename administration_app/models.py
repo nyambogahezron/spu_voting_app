@@ -27,9 +27,11 @@ class Voter(models.Model):
 
 class RunningMate(models.Model):
     name = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.TextField(max_length=400,null=True, blank=True)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
+    photo = models.ImageField(null=True, blank=True, default='user.svg')
+
 
     def __str__(self):
         return self.name

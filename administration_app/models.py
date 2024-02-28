@@ -30,7 +30,7 @@ class RunningMate(models.Model):
     description = models.TextField(max_length=400,null=True, blank=True)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
-    photo = models.ImageField(null=True, blank=True, default='user.svg')
+    photo = models.ImageField(null=True, blank=True, default='user.png')
 
 
     def __str__(self):

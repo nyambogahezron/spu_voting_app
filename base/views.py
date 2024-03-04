@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .models import User
-from administration_app.models import Election, Position, RunningMate
+from administration_app.models import Election, Position, RunningMate, Ballot
 from .forms import UserForm, UserCreationForm_Customized
 
 
@@ -63,6 +63,8 @@ def home(request):
         }
         for position in positions:
             running_mates = RunningMate.objects.filter(position=position, election=election)
+            # ballot = Ballot.objects.filter(user=request.user.id, election=election, position=position)
+            
             position_data = {
                 'position': position,
                 'running_mates': running_mates,
@@ -74,6 +76,30 @@ def home(request):
         'data': data,
     }
     return render(request, 'base/home.html', context)
+
+
+
+def vote(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        running_mate_id = request.POST.get('running_mate_id')
+        election_id = request.POST.get('election_id')
+        position_id = request.POST.get('position')
+
+        user = User.objects.get(id=user_id)
+        running_mate = RunningMate.objects.get(id=running_mate_id)
+        election = Election.objects.get(id=election_id)
+        position = Position.objects.get(id=position_id)
+
+        ballot = Ballot.objects.filter(user=user, election=election, position=position)
+
+        if ballot.exists():
+            messages.error(request, 'You have already voted for this running mate in this election.')
+        else:
+            Ballot.objects.create(user=user, running_mate=running_mate, election=election,position=position)
+            messages.success(request, 'Your vote has been recorded.')
+
+    return redirect('home')
 
 
 def logoutUser(request):

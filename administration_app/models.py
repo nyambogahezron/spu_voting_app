@@ -38,6 +38,7 @@ class RunningMate(models.Model):
 
 class Ballot(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    position = models.ForeignKey(Position, on_delete=models.CASCADE, null=True, blank=True)
     running_mate = models.ForeignKey(RunningMate, on_delete=models.CASCADE)
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)

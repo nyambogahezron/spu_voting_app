@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import User
 from administration_app.models import Election, Position, RunningMate, Ballot
 from .forms import UserForm, UserCreationForm_Customized
+from django.db.models import Count
 
 
 def loginUser(request):
@@ -62,14 +63,17 @@ def home(request):
             'positions': [],
         }
         for position in positions:
-            running_mates = RunningMate.objects.filter(position=position, election=election)
-            # ballot = Ballot.objects.filter(user=request.user.id, election=election, position=position)
-            
-            position_data = {
-                'position': position,
-                'running_mates': running_mates,
-            }
-            election_data['positions'].append(position_data)
+            # Check if the user has already voted for this position in this election
+            user_has_voted = Ballot.objects.filter(user=request.user, position=position, election=election).exists()
+
+            if not user_has_voted:
+                running_mates = RunningMate.objects.filter(position=position, election=election)
+                
+                position_data = {
+                    'position': position,
+                    'running_mates': running_mates,
+                }
+                election_data['positions'].append(position_data)
         data.append(election_data)
 
     context = {
@@ -100,6 +104,44 @@ def vote(request):
             messages.success(request, 'Your vote has been recorded.')
 
     return redirect('home')
+
+
+def results(request):
+    # Get all elections
+    elections = Election.objects.all()
+
+    data = []
+
+    for election in elections:
+        election_data = {"name": election.name, "positions": []}
+
+        # Get all positions for this election
+        positions = Position.objects.filter(election=election)
+
+        for position in positions:
+            position_data = {"title": position.title, "running_mates": []}
+
+            # Get all running mates for this position in this election
+            running_mates = RunningMate.objects.filter(position=position, election=election)
+
+            for running_mate in running_mates:
+                # Get all ballots for this running mate in this election
+                ballots = Ballot.objects.filter(running_mate=running_mate, election=election)
+
+                # Get the total count of ballots
+                total_count = ballots.count()
+
+                position_data["running_mates"].append({"name": running_mate.name, "total_votes": total_count})
+
+            # Sort running mates by total votes from largest to smallest
+            position_data["running_mates"] = sorted(position_data["running_mates"], key=lambda rm: rm["total_votes"], reverse=True)
+
+            election_data["positions"].append(position_data)
+
+        data.append(election_data)
+
+    return render(request, 'base/results.html', {"elections": data})
+
 
 
 def logoutUser(request):

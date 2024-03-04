@@ -6,13 +6,13 @@
     <title>Document</title>
   </head>
   <body>
-     {% if messages %}
+    {% if messages %}
     <ul class="messages">
       {% for message in messages %}
       <li>{{ message }}</li>
       {% endfor %}
     </ul>
-    {% endif %} 
+    {% endif %}
     <div>
       <a href="{% url 'logout' %}">logout</a>
     </div>
@@ -35,7 +35,11 @@
       <form method="post" action="{% url 'vote' %}">
         {% csrf_token %}
         <input type="hidden" name="user_id" value="{{ request.user.id }}" />
-        <input type="hidden" name="position" value="{{ position_data.position.id  }}" />
+        <input
+          type="hidden"
+          name="position"
+          value="{{ position_data.position.id  }}"
+        />
         <input
           type="hidden"
           name="running_mate_id"
@@ -48,7 +52,11 @@
         />
         <input type="submit" value="Vote" />
       </form>
-      {% endfor %} {% endfor %} {% endfor %}
+      {% endfor %} {% empty %}
+      <p>No votes available</p>
+      {% endfor %} {% empty %}
+      <p>No Election available</p>
+      {% endfor %}
     </div>
   </body>
 </html>

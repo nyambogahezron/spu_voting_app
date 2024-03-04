@@ -6,13 +6,15 @@
 	<title>Document</title>
 </head>
 <body>
-	{% for election_data in data %}
-      <h2>{{ election_data.election.name }}</h2>
-      {% for position_data in election_data.positions %}
-      <h3>{{ position_data.position.title }}</h3>
-      {% for ballots in position_data.ballots %}
-      <p>{{ ballots.name }}</p>
-      {% endfor %} {% endfor %} {% endfor %}
+	{% for election in elections %}
+    <h1>{{ election.name }}</h1>
+    {% for position in election.positions %}
+        <h2>{{ position.title }}</h2>
+        {% for running_mate in position.running_mates %}
+            <p>{{ running_mate.name }}: {{ running_mate.total_votes }} votes</p>
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
 	
 </body>
 </html>

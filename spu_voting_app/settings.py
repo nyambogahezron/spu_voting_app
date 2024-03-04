@@ -14,6 +14,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -23,6 +24,13 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'administration_app',
 ]
+
+JAZZMIN_SETTINGS = {
+    "site_title": "SPU VOTING",
+    "site_header": "SPU VOTING",
+    "site_logo": "images/admin-interface/favicon/spu_logo_1.png",
+    "login_logo": 'images/admin-interface/favicon/spu_logo_1.png',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

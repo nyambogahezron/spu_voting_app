@@ -1,30 +1,38 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
   <head>
     <title>Register</title>
-<link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
+    <div class="alert-container">
+      {% for message in messages %}
+      <div class="alert" id="alert">{{ message }}</div>
+      {% endfor %}
+    </div>
     <section class="register-page">
       <div class="register">
-      <h1>Register</h1>
-      <form>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" required />
+        <h1>Register</h1>
+        <form method="post">
+          {% csrf_token %} {% for field in form %}
+          <div class="form-group">
+            <label for="room_name">{{field.label}}</label>
+            {{field}}
+          </div>
+          {% endfor %}
+          <button type="submit">Register</button>
+        </form>
+        <div style="margin-top: 15px">
+          Have An Account ?<a href="{% url 'login' %}">Login</a>
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" required />
-        </div>
-        <button type="submit">Register</button>
-      </form>
-    </div>
+      </div>
     </section>
-    
+    <script>
+      setTimeout(function () {
+        var alert = document.getElementById('alert');
+        if (alert) alert.style.display = 'none';
+      }, 3000);
+    </script>
   </body>
 </html>

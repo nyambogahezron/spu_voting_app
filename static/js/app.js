@@ -1,6 +1,6 @@
- document.getElementById('dropdownButton').onclick = function () {
-        document.getElementById('dropdownContent').classList.toggle('show');
-      };
+document.getElementById('dropdownButton').onclick = function () {
+  document.getElementById('dropdownContent').classList.toggle('show');
+};
 
 // Close the dropdown if the user clicks outside of it
 window.onclick = function (event) {
@@ -16,14 +16,16 @@ window.onclick = function (event) {
 };
 
 function togglePasswordVisibility() {
-          var passwordInput = document.getElementById('id_password');
-          if (passwordInput.type === "password") {
-              passwordInput.type = "text";
-          } else {
-              passwordInput.type = "password";
-          }
-      }
-setTimeout(function() {
-  var alert = document.getElementById('alert');
-  if (alert) alert.style.display = 'none';
+  var passwordInput = document.getElementById('id_password');
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+  } else {
+    passwordInput.type = 'password';
+  }
+}
+setTimeout(function () {
+  var alerts = document.querySelectorAll('#alert');
+  alerts.forEach(function (alert) {
+    alert.style.display = 'none';
+  });
 }, 3000);

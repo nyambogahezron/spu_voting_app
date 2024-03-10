@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from .models import User
 from administration_app.models import Election, Position, RunningMate, Ballot
 from .forms import UserForm, UserCreationForm_Customized
-from django.db.models import Count
+from django.db.models import Count , F, ExpressionWrapper, FloatField
 
 
 def loginUser(request):
@@ -106,6 +106,7 @@ def vote(request):
     return redirect('home')
 
 
+
 def results(request):
     # Get all elections
     elections = Election.objects.all()
@@ -124,17 +125,15 @@ def results(request):
             # Get all running mates for this position in this election
             running_mates = RunningMate.objects.filter(position=position, election=election)
 
+            # Calculate total votes for each running mate
+            total_votes = ExpressionWrapper(Count('ballot'), output_field=FloatField())
+
             for running_mate in running_mates:
-                # Get all ballots for this running mate in this election
-                ballots = Ballot.objects.filter(running_mate=running_mate, election=election)
-
-                # Get the total count of ballots
-                total_count = ballots.count()
-
-                position_data["running_mates"].append({"name": running_mate.name, "total_votes": total_count})
+                running_mate.total_votes = Ballot.objects.filter(running_mate=running_mate).count()
+                position_data["running_mates"].append(running_mate)
 
             # Sort running mates by total votes from largest to smallest
-            position_data["running_mates"] = sorted(position_data["running_mates"], key=lambda rm: rm["total_votes"], reverse=True)
+            position_data["running_mates"] = sorted(position_data["running_mates"], key=lambda rm: rm.total_votes, reverse=True)
 
             election_data["positions"].append(position_data)
 
@@ -146,4 +145,4 @@ def results(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('hom')
+    return redirect('login')

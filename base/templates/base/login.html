@@ -1,61 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load static %}
 <html>
-    <head>
-        <title>Login</title>
-        <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    </head>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
 
-    <body>
-        <div class="alert-container">
-            {% for message in messages %}
-            <div class="alert" id="alert">{{ message }}</div>
-            {% endfor %}
+  <body>
+    <div class="alert-container">
+      {% for message in messages %}
+      <div class="alert" id="alert">{{ message }}</div>
+      {% endfor %}
+    </div>
+    <section class="register-page">
+      <div class="register">
+        <h1>Login</h1>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="email">Email Or Username</label>
+            <input type="text" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <div class="form-group">
+            <input type="checkbox" onclick="togglePasswordVisibility()" />Show
+            Password<br />
+          </div>
+          <button type="submit">login</button>
+        </form>
+        <div style="margin-top: 15px">
+          Dont Have An Account ?<a href="{% url 'register' %}">Register</a>
         </div>
-        <section class="register-page">
-            <div class="register">
-                <h1>Login</h1>
-
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="email">Email Or Username</label>
-                        <input type="text" id="email" name="email" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            required
-                        />
-                    </div>
-                    <div class="form-group">
-                        <input
-                            type="checkbox"
-                            onclick="togglePasswordVisibility()"
-                        />Show Password<br />
-                    </div>
-                    <button type="submit">login</button>
-                </form>
-            </div>
-        </section>
-        <script>
-            setTimeout(function () {
-                var alert = document.getElementById("alert");
-                if (alert) alert.style.display = "none";
-            }, 3000);
-        </script>
-        <script>
-            function togglePasswordVisibility() {
-                var passwordInput = document.getElementById("password");
-                if (passwordInput.type === "password") {
-                    passwordInput.type = "text";
-                } else {
-                    passwordInput.type = "password";
-                }
-            }
-        </script>
-    </body>
+      </div>
+    </section>
+    <script>
+      setTimeout(function () {
+        var alert = document.getElementById('alert');
+        if (alert) alert.style.display = 'none';
+      }, 3000);
+    </script>
+    <script>
+      function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('password');
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+        } else {
+          passwordInput.type = 'password';
+        }
+      }
+    </script>
+  </body>
 </html>

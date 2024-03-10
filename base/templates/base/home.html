@@ -7,19 +7,19 @@
     <hr />
   </div>
 
-    {% for position_data in election_data.positions %}
+  {% for position_data in election_data.positions %}
   <div class="container home">
     <div class="row">
       <h3 class="position-title">{{ position_data.position.title }}</h3>
       <hr />
       <div class="candidate-wrapper">
-      {% for running_mate in position_data.running_mates %}
+        {% for running_mate in position_data.running_mates %}
         <div class="candidate-card">
           <div class="image">
             <img
               class="card-img-top"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkNYg8mO8O2Vca2JZgCpW2SxyCaQ5l6J9190lCe4Efkw&s"
-              alt="Candidate 1"
+              src="{{running_mate.photo.url}}"
+              alt="{{ running_mate.name }}"
             />
           </div>
           <div class="card-body">
@@ -29,13 +29,13 @@
               type="button"
               class="btn btn-primary vote-btn"
               data-bs-toggle="modal"
-              data-bs-target="#voteConfirmModal"
+              data-bs-target="#voteConfirmModal{{ running_mate.id }}"
             >
               Vote
             </button>
             <div
               class="modal fade"
-              id="voteConfirmModal"
+              id="voteConfirmModal{{ running_mate.id }}"
               tabindex="-1"
               role="dialog"
             >
@@ -49,37 +49,65 @@
                       data-bs-dismiss="modal"
                     ></button>
                   </div>
-                  <div class="modal-body">
-                    <p>Are you sure you want to vote for {{running_mate.name}}</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
-                      Confirm
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                    >
-                      Cancel
-                    </button>
+                  <div>
+                    <form method="post" action="{% url 'vote' %}">
+                      {% csrf_token %}
+                      <div class="modal-body">
+                        <p>
+                          Are you sure you want to vote for
+                          <b>{{running_mate.name}}</b> as
+                          <b>{{ running_mate.position }}?</b>
+                        </p>
+                        <input
+                          type="hidden"
+                          name="user_id"
+                          value="{{ request.user.id }}"
+                        />
+                        <input
+                          type="hidden"
+                          name="position"
+                          value="{{ position_data.position.id }}"
+                        />
+                        <input
+                          type="hidden"
+                          name="running_mate_id"
+                          value="{{ running_mate.id }}"
+                        />
+                        <input
+                          type="hidden"
+                          name="election_id"
+                          value="{{ election_data.election.id }}"
+                        />
+                      </div>
+                      <div class="modal-footer">
+                        <input
+                          type="submit"
+                          class="btn btn-primary"
+                          value="Confirm"
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-    {% endfor %} 
+        {% endfor %}
       </div>
     </div>
     <hr />
   </div>
   {% endfor %} {% empty %}
-      <p>No votes available</p>
-  </div>
-
+  <p>No votes available</p>
   {% endfor %}
-
 </main>
 
 <script

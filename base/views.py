@@ -146,4 +146,4 @@ def results(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('home')
+    return redirect('hom')

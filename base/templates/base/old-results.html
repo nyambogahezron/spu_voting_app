@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+</head>
+<body>
+	{% for election in elections %}
+    <h1>{{ election.name }}</h1>
+    {% for position in election.positions %}
+        <h2>{{ position.title }}</h2>
+        {% for running_mate in position.running_mates %}
+            <p>{{ running_mate.name }}: {{ running_mate.total_votes }} votes</p>
+        {% endfor %}
+    {% endfor %}
+{% endfor %}
+	
+</body>
+</html>

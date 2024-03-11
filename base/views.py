@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .models import User
 from administration_app.models import Election, Position, RunningMate, Ballot
-from .forms import UserForm, UserCreationForm_Customized
+from .forms import UserForm, UserCreationFormCustomized
 from django.db.models import Count, F, ExpressionWrapper, FloatField
 
 
@@ -34,10 +34,10 @@ def loginUser(request):
 
 
 def registerUser(request):
-    form = UserCreationForm_Customized()
+    form = UserCreationFormCustomized()
 
     if request.method == 'POST':
-        form = UserCreationForm_Customized(request.POST)
+        form = UserCreationFormCustomized(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()

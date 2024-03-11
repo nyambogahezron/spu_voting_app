@@ -12,7 +12,6 @@ from django.db.models import Count, F, ExpressionWrapper, FloatField
 def loginUser(request):
     if request.user.is_authenticated:
         return redirect('home')
-
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -20,22 +19,18 @@ def loginUser(request):
             user = User.objects.get(email=email)
         except:
             messages.error(request, "User does not exist")
-
         user = authenticate(request, email=email, username=email, password=password)
-
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
             messages.error(request, "Invalid details")
-
     context = {}
     return render(request, 'base/login.html', context)
 
 
 def registerUser(request):
     form = UserCreationFormCustomized()
-
     if request.method == 'POST':
         form = UserCreationFormCustomized(request.POST)
         if form.is_valid():
@@ -47,7 +42,6 @@ def registerUser(request):
         else:
             messages.error(request, "something went wrong!")
     context = {'form': form}
-
     return render(request, 'base/register.html', context)
 
 
@@ -56,7 +50,6 @@ def home(request):
     current_time = timezone.now()
     elections = Election.objects.filter(end_date__gt=current_time)
     data = []
-
     for election in elections:
         positions = Position.objects.filter(election=election)
         election_data = {
@@ -66,17 +59,14 @@ def home(request):
         for position in positions:
             # Check if the user has already voted for this position in this election
             user_has_voted = Ballot.objects.filter(user=request.user, position=position, election=election).exists()
-
             if not user_has_voted:
                 running_mates = RunningMate.objects.filter(position=position, election=election)
-
                 position_data = {
                     'position': position,
                     'running_mates': running_mates,
                 }
                 election_data['positions'].append(position_data)
         data.append(election_data)
-
     context = {
         'data': data,
     }
@@ -90,20 +80,18 @@ def vote(request):
         running_mate_id = request.POST.get('running_mate_id')
         election_id = request.POST.get('election_id')
         position_id = request.POST.get('position')
-
+        # Fetch objects from database
         user = User.objects.get(id=user_id)
         running_mate = RunningMate.objects.get(id=running_mate_id)
         election = Election.objects.get(id=election_id)
         position = Position.objects.get(id=position_id)
-
         ballot = Ballot.objects.filter(user=user, election=election, position=position)
-
+        # Condition to check if the voter has already voted
         if ballot.exists():
             messages.error(request, 'You have already voted for this running mate in this election.')
         else:
             Ballot.objects.create(user=user, running_mate=running_mate, election=election, position=position)
             messages.success(request, 'Your vote has been recorded.')
-
     return redirect('home')
 
 
@@ -145,5 +133,6 @@ def results(request):
 
 
 def logoutUser(request):
+    # Logs out the user
     logout(request)
     return redirect('login')

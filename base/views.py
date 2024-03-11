@@ -6,13 +6,13 @@ from django.contrib.auth import authenticate, login, logout
 from .models import User
 from administration_app.models import Election, Position, RunningMate, Ballot
 from .forms import UserForm, UserCreationForm_Customized
-from django.db.models import Count , F, ExpressionWrapper, FloatField
+from django.db.models import Count, F, ExpressionWrapper, FloatField
 
 
 def loginUser(request):
     if request.user.is_authenticated:
         return redirect('home')
-    
+
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -21,11 +21,11 @@ def loginUser(request):
         except:
             messages.error(request, "User does not exist")
 
-        user = authenticate(request, email=email ,username=email , password=password)
+        user = authenticate(request, email=email, username=email, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect('home') 
+            return redirect('home')
         else:
             messages.error(request, "Invalid details")
 
@@ -35,7 +35,6 @@ def loginUser(request):
 
 def registerUser(request):
     form = UserCreationForm_Customized()
-
 
     if request.method == 'POST':
         form = UserCreationForm_Customized(request.POST)
@@ -50,6 +49,7 @@ def registerUser(request):
     context = {'form': form}
 
     return render(request, 'base/register.html', context)
+
 
 @login_required
 def home(request):
@@ -69,7 +69,7 @@ def home(request):
 
             if not user_has_voted:
                 running_mates = RunningMate.objects.filter(position=position, election=election)
-                
+
                 position_data = {
                     'position': position,
                     'running_mates': running_mates,
@@ -101,7 +101,7 @@ def vote(request):
         if ballot.exists():
             messages.error(request, 'You have already voted for this running mate in this election.')
         else:
-            Ballot.objects.create(user=user, running_mate=running_mate, election=election,position=position)
+            Ballot.objects.create(user=user, running_mate=running_mate, election=election, position=position)
             messages.success(request, 'Your vote has been recorded.')
 
     return redirect('home')
@@ -134,14 +134,14 @@ def results(request):
                 position_data["running_mates"].append(running_mate)
 
             # Sort running mates by total votes from largest to smallest
-            position_data["running_mates"] = sorted(position_data["running_mates"], key=lambda rm: rm.total_votes, reverse=True)
+            position_data["running_mates"] = sorted(position_data["running_mates"], key=lambda rm: rm.total_votes,
+                                                    reverse=True)
 
             election_data["positions"].append(position_data)
 
         data.append(election_data)
 
     return render(request, 'base/results.html', {"elections": data})
-
 
 
 def logoutUser(request):

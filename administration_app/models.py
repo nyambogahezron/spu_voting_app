@@ -1,6 +1,7 @@
 from base.models import User
 from django.db import models
 
+
 class Election(models.Model):
     name = models.CharField(max_length=200)
     start_date = models.DateTimeField()
@@ -10,12 +11,14 @@ class Election(models.Model):
     def __str__(self):
         return self.name
 
+
 class Position(models.Model):
     title = models.CharField(max_length=200)
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
+
 
 class Voter(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -25,16 +28,17 @@ class Voter(models.Model):
     def __str__(self):
         return self.user.username
 
+
 class RunningMate(models.Model):
     name = models.CharField(max_length=200)
-    description = models.TextField(max_length=400,null=True, blank=True)
+    description = models.TextField(max_length=400, null=True, blank=True)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     election = models.ForeignKey(Election, on_delete=models.CASCADE)
     photo = models.ImageField(null=True, blank=True, default='user.png')
 
-
     def __str__(self):
         return self.name
+
 
 class Ballot(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

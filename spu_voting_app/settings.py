@@ -1,5 +1,10 @@
 from pathlib import Path
 
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
+
+LOGIN_URL = '/login/'
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 AUTH_USER_MODEL = 'base.User'
 

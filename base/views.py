@@ -36,6 +36,7 @@ def loginUser(request):
 def registerUser(request):
     form = UserCreationForm_Customized()
 
+
     if request.method == 'POST':
         form = UserCreationForm_Customized(request.POST)
         if form.is_valid():

@@ -3,6 +3,8 @@ Django==5.0.2
 django-admin-interface==0.28.5
 django-colorfield==0.11.0
 django-jazzmin==2.6.0
+gunicorn==21.2.0
+packaging==24.0
 pillow==10.2.0
 python-slugify==8.0.4
 sqlparse==0.4.4

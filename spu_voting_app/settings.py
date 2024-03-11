@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import mimetypes
+
 mimetypes.add_type("text/css", ".css", True)
 
 LOGIN_URL = '/login/'
@@ -14,7 +15,6 @@ SECRET_KEY = 'django-insecure-juxr&@^v-iw^#n6o*kpol2b(0v_%$)n5uc6ne!$27wz)tlw=ux
 DEBUG = True
 
 ALLOWED_HOSTS = ['spu-voting-app.onrender.com']
-
 
 # Application definition
 
@@ -70,7 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'spu_voting_app.wsgi.application'
 
-
 # Database
 
 DATABASES = {
@@ -79,7 +78,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 
@@ -98,7 +96,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -109,7 +106,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
@@ -125,6 +121,5 @@ MEDIA_ROOT = BASE_DIR / 'static/images'
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 STATIC_ROOT = "/static/"

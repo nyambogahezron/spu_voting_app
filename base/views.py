@@ -50,7 +50,7 @@ def registerUser(request):
 
     return render(request, 'base/register.html', context)
 
-
+@login_required
 def home(request):
     current_time = timezone.now()
     elections = Election.objects.filter(end_date__gt=current_time)
@@ -82,7 +82,7 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-
+@login_required
 def vote(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
@@ -106,7 +106,7 @@ def vote(request):
     return redirect('home')
 
 
-
+@login_required
 def results(request):
     # Get all elections
     elections = Election.objects.all()

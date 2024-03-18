@@ -12,8 +12,8 @@ AUTH_USER_MODEL = 'base.User'
 SECRET_KEY = 'django-insecure-juxr&@^v-iw^#n6o*kpol2b(0v_%$)n5uc6ne!$27wz)tlw=ux'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# DEBUG = True
+# DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['spu-voting-app.onrender.com']
@@ -115,7 +115,7 @@ MEDIA_URL = '/images/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    '/https://spu-voting-app.onrender.com'
+    '/https://spu-voting-app.onrender.com',
 ]
 
 MEDIA_ROOT = BASE_DIR / 'static/images'

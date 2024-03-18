@@ -85,6 +85,7 @@ ul li a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: -20px;
 }
 .register {
   max-width: 400px;
@@ -171,6 +172,18 @@ form button:hover {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+}
+@media screen and (max-width: 800px) {
+  .candidate-wrapper {
+    grid-template-columns: repeat(1, 1fr);
+    column-gap: 20px;
+  }
+  .candidate-card {
+    height: 200px;
+  }
+  .register {
+    max-width: 300px;
+  }
 }
 .candidate-card {
   border: 1px solid #b4c2b2;

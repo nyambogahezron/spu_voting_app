@@ -13,7 +13,8 @@ SECRET_KEY = 'django-insecure-juxr&@^v-iw^#n6o*kpol2b(0v_%$)n5uc6ne!$27wz)tlw=ux
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['spu-voting-app.onrender.com']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['spu-voting-app.onrender.com']
 
 
 # Application definition

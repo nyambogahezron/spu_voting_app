@@ -32,19 +32,35 @@ ul li a {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.alert-container {
-  width: 300px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 999;
-}
 .alert {
-  background-color: #f44336;
-  color: white;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alert-warning {
+  color: #856404;
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+.alert-info {
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb;
 }
 /* navbar */
 
@@ -229,7 +245,7 @@ form button:hover {
   right: 5px;
   width: 95%;
 }
-.candidate-photo img{
+.candidate-photo img {
   width: 130px;
   height: 130px;
 }

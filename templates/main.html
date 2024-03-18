@@ -20,17 +20,22 @@
     </head>
     <body>
         {% include 'navbar.html' %} {% for message in messages %}
-        <div class="alert" id="alert">{{ message }}</div>
+        <div
+            class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}"
+            id="alert"
+        >
+            {{ message }}
+        </div>
         {% endfor %} {% block content %} {% endblock %}
-        
+
         <script>
-      setTimeout(function () {
-        var alerts = document.querySelectorAll("#alert");
-        alerts.forEach(function (alert) {
-          alert.style.display = "none";
-        });
-      }, 3000);
-    </script>
+            setTimeout(function () {
+                var alerts = document.querySelectorAll("#alert");
+                alerts.forEach(function (alert) {
+                    alert.style.display = "none";
+                });
+            }, 3000);
+        </script>
 
         <script src="{% static 'js/app.js' %}"></script>
 

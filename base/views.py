@@ -18,13 +18,13 @@ def loginUser(request):
         try:
             user = User.objects.get(email=email)
         except:
-            messages.error(request, "User does not exist")
+            messages.warning(request, "User does not exist", extra_tags='warning')
         user = authenticate(request, email=email, username=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, "Invalid details")
+            messages.warning(request, "Invalid details", extra_tags='warning')
     context = {}
     return render(request, 'base/login.html', context)
 
@@ -40,7 +40,7 @@ def registerUser(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, "something went wrong!")
+            messages.warning(request, "something went wrong!", extra_tags='warning')
     context = {'form': form}
     return render(request, 'base/register.html', context)
 
@@ -88,10 +88,10 @@ def vote(request):
         ballot = Ballot.objects.filter(user=user, election=election, position=position)
         # Condition to check if the voter has already voted
         if ballot.exists():
-            messages.error(request, 'You have already voted for this running mate in this election.')
+            messages.info(request, 'You have already voted for this running mate in this election.', extra_tags='info')
         else:
             Ballot.objects.create(user=user, running_mate=running_mate, election=election, position=position)
-            messages.success(request, 'Your vote has been recorded.')
+            messages.success(request, 'Your vote has been recorded.', extra_tags='success')
     return redirect('home')
 
 

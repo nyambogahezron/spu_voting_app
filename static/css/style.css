@@ -198,8 +198,6 @@ form button:hover {
   height: 100%;
 }
 .candidate-card .image img {
-  width: 100%;
-  height: 100%;
   transition: ease all 0.3s;
   opacity: 1;
   object-fit: fill;
@@ -230,6 +228,10 @@ form button:hover {
   bottom: 5px;
   right: 5px;
   width: 95%;
+}
+.candidate-photo img{
+  width: 130px;
+  height: 130px;
 }
 
 /*results */

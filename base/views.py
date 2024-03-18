@@ -95,41 +95,46 @@ def vote(request):
     return redirect('home')
 
 
+
 @login_required
 def results(request):
-    # Get all elections
     elections = Election.objects.all()
-
     data = []
 
     for election in elections:
         election_data = {"name": election.name, "positions": []}
 
-        # Get all positions for this election
         positions = Position.objects.filter(election=election)
 
         for position in positions:
-            position_data = {"title": position.title, "running_mates": []}
+            position_data = {"title": position.title, "total_votes": 0, "running_mates": []}
 
-            # Get all running mates for this position in this election
             running_mates = RunningMate.objects.filter(position=position, election=election)
 
-            # Calculate total votes for each running mate
-            total_votes = ExpressionWrapper(Count('ballot'), output_field=FloatField())
+            # Calculate total votes for this position
+            total_votes_in_position = Ballot.objects.filter(election=election, running_mate__position=position).count()
+            position_data["total_votes"] = total_votes_in_position
 
             for running_mate in running_mates:
-                running_mate.total_votes = Ballot.objects.filter(running_mate=running_mate).count()
+                # Calculate total votes for this running mate
+                total_votes_for_running_mate = Ballot.objects.filter(running_mate=running_mate).count()
+                running_mate.total_votes = total_votes_for_running_mate
+
+                # Calculate percentage of votes for this running mate
+                if total_votes_in_position > 0:
+                    running_mate.percentage_votes = (total_votes_for_running_mate / total_votes_in_position) * 100
+                else:
+                    running_mate.percentage_votes = 0
+
                 position_data["running_mates"].append(running_mate)
 
-            # Sort running mates by total votes from largest to smallest
-            position_data["running_mates"] = sorted(position_data["running_mates"], key=lambda rm: rm.total_votes,
-                                                    reverse=True)
-
+            position_data["running_mates"] = sorted(position_data["running_mates"], key=lambda rm: rm.total_votes, reverse=True)
             election_data["positions"].append(position_data)
 
         data.append(election_data)
 
     return render(request, 'base/results.html', {"elections": data})
+
 
 
 def logoutUser(request):

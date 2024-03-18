@@ -18,8 +18,8 @@ def loginUser(request):
         try:
             user = User.objects.get(email=email)
         except:
-            messages.warning(request, "User does not exist", extra_tags='warning')
-        user = authenticate(request, email=email, username=email, password=password)
+            messages.success(request, "logged in successful", extra_tags='success')
+        user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')

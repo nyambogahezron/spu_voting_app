@@ -1,118 +1,118 @@
 {% extends 'main.html' %} {% block content %}
 
 <main>
-  {% for election_data in data %}
-  <div class="election-title">
-    <h2>{{ election_data.election.name }}</h2>
-    <hr />
-  </div>
-
-  {% for position_data in election_data.positions %}
-  <div class="container home">
-    <div class="row">
-      <h3 class="position-title">{{ position_data.position.title }}</h3>
-      <hr />
-      <div class="candidate-wrapper">
-        {% for running_mate in position_data.running_mates %}
-        <div class="candidate-card">
-          <div class="image">
-            <img
-              class="card-img-top"
-              src="{{running_mate.photo.url}}"
-              alt="{{ running_mate.name }}"
-            />
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ running_mate.name }}</h5>
-            <p class="card-text">{{ running_mate.position }}</p>
-            <button
-              type="button"
-              class="btn btn-primary vote-btn"
-              data-bs-toggle="modal"
-              data-bs-target="#voteConfirmModal{{ running_mate.id }}"
-            >
-              Vote
-            </button>
-            <div
-              class="modal fade"
-              id="voteConfirmModal{{ running_mate.id }}"
-              tabindex="-1"
-              role="dialog"
-            >
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Confirm Vote</h5>
-                    <button
-                      type="button"
-                      class="btn-close"
-                      data-bs-dismiss="modal"
-                    ></button>
-                  </div>
-                  <div>
-                    <form method="post" action="{% url 'vote' %}">
-                      {% csrf_token %}
-                      <div class="modal-body">
-                        <p>
-                          Are you sure you want to vote for
-                          <b>{{running_mate.name}}</b> as
-                          <b>{{ running_mate.position }}?</b>
-                        </p>
-                        <input
-                          type="hidden"
-                          name="user_id"
-                          value="{{ request.user.id }}"
-                        />
-                        <input
-                          type="hidden"
-                          name="position"
-                          value="{{ position_data.position.id }}"
-                        />
-                        <input
-                          type="hidden"
-                          name="running_mate_id"
-                          value="{{ running_mate.id }}"
-                        />
-                        <input
-                          type="hidden"
-                          name="election_id"
-                          value="{{ election_data.election.id }}"
-                        />
-                      </div>
-                      <div class="modal-footer">
-                        <input
-                          type="submit"
-                          class="btn btn-primary"
-                          value="Confirm"
-                        />
-                        <button
-                          type="button"
-                          class="btn btn-secondary"
-                          data-bs-dismiss="modal"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
+    {% for election_data in data %}
+    <div class="election-title">
+        <h2>{{ election_data.election.name }}</h2>
+        <hr/>
     </div>
-    <hr />
-  </div>
-  {% endfor %} {% empty %}
-  <p>No votes available</p>
-  {% endfor %}
+
+    {% for position_data in election_data.positions %}
+    <div class="container home">
+        <div class="row">
+            <h3 class="position-title">{{ position_data.position.title }}</h3>
+            <hr/>
+            <div class="candidate-wrapper">
+                {% for running_mate in position_data.running_mates %}
+                <div class="candidate-card">
+                    <div class="image">
+                        <img
+                                class="card-img-top"
+                                src="{{running_mate.photo.url}}"
+                                alt="{{ running_mate.name }}"
+                        />
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ running_mate.name }}</h5>
+                        <p class="card-text">{{ running_mate.position }}</p>
+                        <button
+                                type="button"
+                                class="btn btn-primary vote-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#voteConfirmModal{{ running_mate.id }}"
+                        >
+                            Vote
+                        </button>
+                        <div
+                                class="modal fade"
+                                id="voteConfirmModal{{ running_mate.id }}"
+                                tabindex="-1"
+                                role="dialog"
+                        >
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirm Vote</h5>
+                                        <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal"
+                                        ></button>
+                                    </div>
+                                    <div>
+                                        <form method="post" action="{% url 'vote' %}">
+                                            {% csrf_token %}
+                                            <div class="modal-body">
+                                                <p>
+                                                    Are you sure you want to vote for
+                                                    <b>{{running_mate.name}}</b> as
+                                                    <b>{{ running_mate.position }}?</b>
+                                                </p>
+                                                <input
+                                                        type="hidden"
+                                                        name="user_id"
+                                                        value="{{ request.user.id }}"
+                                                />
+                                                <input
+                                                        type="hidden"
+                                                        name="position"
+                                                        value="{{ position_data.position.id }}"
+                                                />
+                                                <input
+                                                        type="hidden"
+                                                        name="running_mate_id"
+                                                        value="{{ running_mate.id }}"
+                                                />
+                                                <input
+                                                        type="hidden"
+                                                        name="election_id"
+                                                        value="{{ election_data.election.id }}"
+                                                />
+                                            </div>
+                                            <div class="modal-footer">
+                                                <input
+                                                        type="submit"
+                                                        class="btn btn-primary"
+                                                        value="Confirm"
+                                                />
+                                                <button
+                                                        type="button"
+                                                        class="btn btn-secondary"
+                                                        data-bs-dismiss="modal"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <hr/>
+    </div>
+    {% endfor %} {% empty %}
+    <p>No votes available</p>
+    {% endfor %}
 </main>
 
 <script
-  src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-  crossorigin="anonymous"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"
 ></script>
 {% endblock content %}
